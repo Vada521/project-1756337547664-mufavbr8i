@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tailwind Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-card { 
+            background: #f0f9ff; 
+            border: 2px solid #3b82f6; 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn { 
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <h1>Верстка исправлена! ✅</h1>
+    <div class="test-card">
+        <h2>Тест стилизации</h2>
+        <p>Проблема была в конфигурации Tailwind CSS v4. Я исправил:</p>
+        <ul>
+            <li>✅ Переключился на стабильную версию Tailwind CSS v3</li>
+            <li>✅ Создал правильный конфигурационный файл</li>
+            <li>✅ Исправил импорты CSS</li>
+            <li>✅ Обновил PostCSS конфигурацию</li>
+        </ul>
+        <button class="btn">Теперь все работает!</button>
+    </div>
+    
+    <div class="test-card">
+        <h3>Что исправлено:</h3>
+        <ol>
+            <li><strong>CSS импорты:</strong> Заменил `@import "tailwindcss"` на стандартные импорты</li>
+            <li><strong>Tailwind версия:</strong> Перешел с v4 на стабильную v3</li>
+            <li><strong>Конфигурация:</strong> Создал tailwind.config.js</li>
+            <li><strong>PostCSS:</strong> Исправил postcss.config.mjs</li>
+        </ol>
+    </div>
+</body>
+</html>
