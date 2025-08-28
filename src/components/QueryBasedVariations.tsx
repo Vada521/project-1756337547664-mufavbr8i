@@ -47,7 +47,7 @@ const QUERY_VARIATIONS: QueryVariation[] = [
       primaryColor: 'green'
     },
     quiz: {
-      firstQuestionOverride: 'What\'s your budget for trademark protection?',
+      firstQuestionOverride: 'What&apos;s your budget for trademark protection?',
       progressText: 'Calculating your custom pricing...'
     }
   },
@@ -78,7 +78,7 @@ const QUERY_VARIATIONS: QueryVariation[] = [
     intent: 'protection', 
     hero: {
       headline: 'Stop Trademark Theft Before It Happens',
-      subheadline: 'Don\'t let competitors steal your customers with copycat brands',
+      subheadline: 'Don&apos;t let competitors steal your customers with copycat brands',
       urgency: '⚠️ Every day unprotected puts your business at risk',
       buttonText: 'Protect My Brand Now',
       backgroundColor: 'from-blue-600 to-blue-800',
@@ -145,7 +145,7 @@ const QUERY_VARIATIONS: QueryVariation[] = [
     intent: 'competitor',
     hero: {
       headline: 'Beat Your Competition to the Trademark Office',
-      subheadline: 'File first, win the rights • Don\'t let others claim your brand',
+      subheadline: 'File first, win the rights • Don&apos;t let others claim your brand',
       urgency: '🏁 Race against time - competitors are filing daily',
       buttonText: 'File Before Competition',
       backgroundColor: 'from-orange-500 to-red-500',
@@ -229,21 +229,13 @@ export function QueryBasedLayout({ children }: { children: React.ReactNode }) {
     return <div>{children}</div>; // Default layout
   }
 
-  const colorClasses = {
-    green: 'text-green-600 border-green-200 bg-green-50',
-    red: 'text-red-600 border-red-200 bg-red-50', 
-    blue: 'text-blue-600 border-blue-200 bg-blue-50',
-    purple: 'text-purple-600 border-purple-200 bg-purple-50',
-    indigo: 'text-indigo-600 border-indigo-200 bg-indigo-50',
-    orange: 'text-orange-600 border-orange-200 bg-orange-50'
-  };
 
   return (
     <div className="query-variation-layout">
       {/* Debug info - only in development */}
       {process.env.NODE_ENV === 'development' && (
         <div className="fixed top-0 left-0 bg-black text-white text-xs p-2 z-50">
-          Query: "{query}" | Variation: {variation.id}
+          Query: &quot;{query}&quot; | Variation: {variation.id}
         </div>
       )}
 

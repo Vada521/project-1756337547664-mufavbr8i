@@ -135,7 +135,7 @@ export function SocialProofElement() {
                 )}
               </div>
               <p className="text-sm text-gray-600 mb-1">{testimonials[currentTestimonial].company}</p>
-              <p className="text-gray-700 italic">"{testimonials[currentTestimonial].text}"</p>
+              <p className="text-gray-700 italic">&quot;{testimonials[currentTestimonial].text}&quot;</p>
               <p className="text-green-600 font-bold text-sm mt-2">{testimonials[currentTestimonial].result}</p>
             </div>
           </div>
@@ -238,7 +238,7 @@ export function RiskReversal() {
         100% Money-Back Guarantee
       </h3>
       <p className="text-green-700 mb-4">
-        If your trademark isn't approved, you get every penny back. No questions asked.
+        If your trademark isn&apos;t approved, you get every penny back. No questions asked.
       </p>
       <div className="flex justify-center space-x-6 text-sm text-green-600">
         <div className="flex items-center">
@@ -269,13 +269,13 @@ export function StoryHook() {
         </h2>
         <p className="text-lg text-blue-100 mb-6 leading-relaxed">
           In 2018, a tech startup was about to close a $5M funding round. Then their biggest competitor 
-          filed for THEIR trademark. The deal fell through. The company folded. All because they didn't 
+          filed for THEIR trademark. The deal fell through. The company folded. All because they didn&apos;t 
           protect their brand name for $500.
         </p>
         <div className="bg-white/10 rounded-lg p-4 mb-6">
           <p className="text-yellow-200 font-bold">
-            "I lost everything because I thought trademark was just paperwork. 
-            Don't make my mistake." - Anonymous Founder
+            &quot;I lost everything because I thought trademark was just paperwork. 
+            Don&apos;t make my mistake.&quot; - Anonymous Founder
           </p>
         </div>
         <p className="text-blue-100">

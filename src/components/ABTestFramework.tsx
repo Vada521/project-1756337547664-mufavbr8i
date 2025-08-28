@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext, useCallback } from "react";
 
 // A/B Test Configuration
 interface ABTest {
@@ -9,7 +9,7 @@ interface ABTest {
   variants: {
     [key: string]: {
       weight: number; // 0-100
-      config: any;
+      config: Record<string, unknown>;
     };
   };
   active: boolean;
@@ -17,7 +17,7 @@ interface ABTest {
 
 interface AnalyticsEvent {
   event: string;
-  properties: { [key: string]: any };
+  properties: { [key: string]: unknown };
   timestamp: number;
   abTests: { [testId: string]: string }; // which variant user sees
 }
@@ -80,9 +80,9 @@ const AB_TESTS: ABTest[] = [
 
 // Analytics Context
 interface AnalyticsContextType {
-  track: (event: string, properties?: { [key: string]: any }) => void;
+  track: (event: string, properties?: { [key: string]: unknown }) => void;
   getVariant: (testId: string) => string;
-  getVariantConfig: (testId: string) => any;
+  getVariantConfig: (testId: string) => Record<string, unknown>;
   abTests: { [testId: string]: string };
 }
 
@@ -92,6 +92,43 @@ const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
 export function ABTestProvider({ children }: { children: React.ReactNode }) {
   const [abTests, setABTests] = useState<{ [testId: string]: string }>({});
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const track = useCallback((event: string, properties: { [key: string]: unknown } = {}) => {
+    if (typeof window === 'undefined') return;
+
+    const analyticsEvent: AnalyticsEvent = {
+      event,
+      properties: {
+        ...properties,
+        url: window.location.href,
+        user_agent: navigator.userAgent,
+        timestamp: Date.now()
+      },
+      timestamp: Date.now(),
+      abTests
+    };
+
+    // Store in localStorage for now (in production, send to your analytics service)
+    const events = JSON.parse(localStorage.getItem('analytics_events') || '[]');
+    events.push(analyticsEvent);
+    
+    // Keep only last 1000 events
+    if (events.length > 1000) {
+      events.splice(0, events.length - 1000);
+    }
+    
+    localStorage.setItem('analytics_events', JSON.stringify(events));
+
+    // Send to external analytics (Google Analytics, Mixpanel, etc.)
+    if ((window as unknown as { gtag?: (event: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag) {
+      ((window as unknown as { gtag: (event: string, eventName: string, parameters: Record<string, unknown>) => void }).gtag)('event', event, {
+        ...properties,
+        custom_parameter_ab_tests: JSON.stringify(abTests)
+      });
+    }
+
+    console.log('📊 Analytics Event:', analyticsEvent);
+  }, [abTests]);
 
   useEffect(() => {
     // Initialize A/B tests on client side
@@ -137,50 +174,13 @@ export function ABTestProvider({ children }: { children: React.ReactNode }) {
       referrer: document.referrer,
       url: window.location.href
     });
-  }, []);
-
-  const track = (event: string, properties: { [key: string]: any } = {}) => {
-    if (typeof window === 'undefined') return;
-
-    const analyticsEvent: AnalyticsEvent = {
-      event,
-      properties: {
-        ...properties,
-        url: window.location.href,
-        user_agent: navigator.userAgent,
-        timestamp: Date.now()
-      },
-      timestamp: Date.now(),
-      abTests
-    };
-
-    // Store in localStorage for now (in production, send to your analytics service)
-    const events = JSON.parse(localStorage.getItem('analytics_events') || '[]');
-    events.push(analyticsEvent);
-    
-    // Keep only last 1000 events
-    if (events.length > 1000) {
-      events.splice(0, events.length - 1000);
-    }
-    
-    localStorage.setItem('analytics_events', JSON.stringify(events));
-
-    // Send to external analytics (Google Analytics, Mixpanel, etc.)
-    if ((window as any).gtag) {
-      (window as any).gtag('event', event, {
-        ...properties,
-        custom_parameter_ab_tests: JSON.stringify(abTests)
-      });
-    }
-
-    console.log('📊 Analytics Event:', analyticsEvent);
-  };
+  }, [track]);
 
   const getVariant = (testId: string): string => {
     return abTests[testId] || 'default';
   };
 
-  const getVariantConfig = (testId: string): any => {
+  const getVariantConfig = (testId: string): Record<string, unknown> => {
     const variant = getVariant(testId);
     const test = AB_TESTS.find(t => t.id === testId);
     return test?.variants[variant]?.config || {};

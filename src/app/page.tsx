@@ -52,7 +52,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-5xl md:text-7xl font-bold text-blue-900 mb-6"
           >
-            {headlineTest.config.headline || personalization.headline}
+{(headlineTest.config.headline as string) || personalization.headline}
           </motion.h1>
           
           <motion.p 
@@ -61,7 +61,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl text-blue-700 mb-4"
           >
-            {headlineTest.config.subheadline || personalization.subheadline}
+{(headlineTest.config.subheadline as string) || personalization.subheadline}
           </motion.p>
           
           <motion.div
