@@ -167,14 +167,18 @@ export function ABTestProvider({ children }: { children: React.ReactNode }) {
     setABTests(userTests);
     localStorage.setItem('ab_tests', JSON.stringify(userTests));
     setIsInitialized(true);
+  }, []); // Remove track dependency to prevent infinite loop
 
-    // Track initial page view with A/B test assignments
-    track('page_view', {
-      page: window.location.pathname,
-      referrer: document.referrer,
-      url: window.location.href
-    });
-  }, [track]);
+  // Separate effect for initial page view tracking
+  useEffect(() => {
+    if (isInitialized && typeof window !== 'undefined') {
+      track('page_view', {
+        page: window.location.pathname,
+        referrer: document.referrer,
+        url: window.location.href
+      });
+    }
+  }, [isInitialized, track]);
 
   const getVariant = (testId: string): string => {
     return abTests[testId] || 'default';

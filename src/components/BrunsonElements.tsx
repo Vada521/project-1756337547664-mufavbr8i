@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 // Russell Brunson's Value Stack Component
 export function ValueStack() {
@@ -122,9 +123,11 @@ export function SocialProofElement() {
           className="space-y-4"
         >
           <div className="flex items-start space-x-4">
-            <img 
+            <Image 
               src={testimonials[currentTestimonial].image}
               alt={testimonials[currentTestimonial].name}
+              width={48}
+              height={48}
               className="w-12 h-12 rounded-full object-cover"
             />
             <div className="flex-1">

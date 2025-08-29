@@ -48,10 +48,13 @@ export default function ExitIntentPopup({ onClose }: ExitIntentPopupProps) {
 
   // Countdown timer
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    }
+    if (timeLeft <= 0) return;
+    
+    const timer = setTimeout(() => {
+      setTimeLeft(prevTime => prevTime - 1);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
